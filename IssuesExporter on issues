@@ -1,0 +1,105 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class IssueExporter {
+    static GitHubRestClient gh = new GitHubRestClient(); 
+    public static PrintWriter out;
+    static IssueParser ie = new IssueParser();
+
+    public IssueExporter() { 
+
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = readData();
+        // setUp(scanner);
+        // issueWrite();
+    }
+
+    private static void setUp(Scanner scanner) {
+        Issue i1 = new Issue();
+        Issue i2 = new Issue();
+        i2.setId(123);
+        Issue i3 = new Issue();
+        User u1 = new User();
+        u1.setLogin("username");
+        i1.setAssignee(u1);
+        List<Issue> col = new ArrayList<Issue>();
+        col.add(i1);
+        col.add(i2);
+        col.add(i3);
+        // System.out.println(col.size());
+        try {
+            out = new PrintWriter(new FileWriter("issues.txt"));
+            for (Issue iterator : col) {
+                out.println(iterator.toString());
+            }
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            scanner.close();
+            out.close();
+
+        }
+    }
+
+    private static Scanner readData() {
+        String jsonOpenOutput = "";
+        String jsonCloseOutput = "";
+        System.out.println("Enter your username: ");
+        Scanner scanner = new Scanner(System.in);
+        String username = scanner.nextLine();
+        // System.out.println("Your username is " + username);
+        System.out.println("Enter your password: ");
+        String password = scanner.nextLine();
+        try {
+            jsonOpenOutput = gh.requestIssues(username, password, "open");
+            jsonCloseOutput = gh.requestIssues(username, password, "close");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("==========Open=========");
+        System.out.println(jsonOpenOutput);
+        System.out.println("========Close========"); 
+        System.out.println(jsonCloseOutput);
+        List<Issue> open_Issue = ie.parseIssues(jsonOpenOutput);
+        System.out.println("open issues size " + open_Issue.size());
+
+        List<Issue> close_Issue = ie.parseIssues(jsonCloseOutput);
+        System.out.println("close issues size " + close_Issue.size());
+
+        open_Issue.addAll(close_Issue);
+
+        System.out.println("total issue size " + open_Issue.size());
+        Collections.sort(open_Issue);
+
+        try {
+            out = new PrintWriter(new FileWriter("issues.txt"));
+            for (Issue iterator : open_Issue) {
+                out.println(iterator.toString());
+            }
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            // scanner.close();
+            out.close();
+
+        }
+
+        return scanner;
+    }
+
+}
