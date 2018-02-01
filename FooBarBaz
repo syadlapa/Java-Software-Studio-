@@ -1,0 +1,85 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class FooBar {
+
+    public static void main(String[] args) {
+        String s;
+                try {
+            PrintWriter out = new PrintWriter(new FileWriter("foobarbaz.txt"));
+            do {
+                @SuppressWarnings("resource")
+                Scanner reader = new Scanner(System.in);
+                System.out.println("Enter a number: ");
+                s = reader.nextLine();
+                if (s.equalsIgnoreCase("STOP")) {
+                    out.close();
+                    System.exit(0);
+                }
+                else {
+                    int a = 0;
+                    a = validation(s, a);
+
+                        foobaralg(out, a);
+                    
+                }
+            } while (s != "STOP");
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int validation(String s, int a) {
+        try {
+            if (s.trim().matches("\\d+")) {
+                a = Integer.parseInt(s.trim());
+            }
+            else {
+                System.out.println("Invalid input");
+                //return 0;
+            }
+
+        }
+        catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+        }
+        return a;
+    }
+
+    public static void foobaralg(PrintWriter out, int a) { 
+        for (int i = 1; i <= a; i++) {
+            if (isDivisible(i,3) == 0 && isDivisible(i,5) != 0 && isDivisible(i,7) != 0) {
+                out.println("foo");
+            }
+            else if (isDivisible(i,5) == 0 && isDivisible(i,3) != 0 && isDivisible(i,7) != 0) {
+                out.println("bar");
+            }
+            else if (isDivisible(i,7) == 0 && isDivisible(i,5)!= 0 && isDivisible(i,3) != 0) {
+                out.println("baz");
+            }
+            else if (isDivisible(i,3) == 0 && isDivisible(i,5) == 0 && isDivisible(i,7) != 0) {
+                out.println("foobar");
+            }
+            else if (isDivisible(i,3) == 0 && isDivisible(i,5)!= 0 && isDivisible(i,7) == 0) {
+                out.println("foobaz");
+            }
+            else if (isDivisible(i,3) != 0 && isDivisible(i,5) == 0 && isDivisible(i,7) == 0) {
+                out.println("barbaz");
+            }
+            else if (isDivisible(i,3) == 0 && isDivisible(i,5) == 0 && isDivisible(i,7) == 0) {
+                out.println("foobarbaz");
+            }
+            else if (isDivisible(i,3) != 0 || isDivisible(i,5) != 0 || isDivisible(i,7) != 0) {
+                out.println(i);
+            }
+        }
+    }
+
+    public static int isDivisible(int i,int n) {
+        return i % n;
+    }
+}
