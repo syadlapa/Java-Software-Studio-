@@ -1,0 +1,83 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class IssueTest {
+    private Issue i1;
+    private Issue i2;
+    private User u1;
+    private User u2;
+
+    @Before
+    public void setUp() throws Exception {
+        i1 = new Issue();
+        i2 = new Issue();
+        u1 = new User();
+        u2 = new User();
+        u1.setId("25");
+        u2.setId("25");
+        u1.setLogin("Tulasi");
+        u2.setLogin("ms-o");
+
+        i1.setId(123);
+        i2.setId(123);
+        i1.setNumber(5);
+        i2.setNumber(5);
+        i1.setState("tul");
+        i2.setState("tul");
+        i1.setBody("akh");
+        i2.setBody("akh");
+        i1.setCreatedAt("");
+        i2.setCreatedAt("");
+        i1.setClosedAt("");
+        i2.setClosedAt("");
+        i1.setUser(u1);
+        i1.setAssignee(u2);
+
+    }
+
+    @Test
+    public void testgetNumber() {
+        int num = i1.getNumber();
+        assertEquals(num, i1.number);
+    }
+
+    @Test
+    public void testHashCode() {
+        assertTrue(i1.hashCode() == i2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        assertTrue(i1.equals(i2)); 
+    }
+
+    @Test
+    public void testCompareToifgreater() {
+        i1.setId(124);
+        assertEquals(1, i1.compareTo(i2));
+    }
+
+    @Test
+    public void testCompareToiflessthan() {
+        i1.setId(10);
+        assertEquals(-1, i1.compareTo(i2));
+    }
+
+    @Test
+    public void testCompareToifequals() {
+        assertEquals(0, i1.compareTo(i2));
+    }
+
+    @Test
+    public void testToString() {
+        String str = "Issue [number=5, id=123, state=tul, title=null, body=akh, createdAt=, closedAt=, user=User [login=Tulasi, id=25], assignee=User [login=ms-o, id=25]]";
+        assertEquals(str, i1.toString());
+        String str1 = "Issue [number=5, id=123, state=tul, title=null, body=akh, createdAt=, closedAt=, user=null, assignee=null]";
+        assertEquals(str1, i2.toString());
+
+    }
+
+}
