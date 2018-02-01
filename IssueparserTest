@@ -1,0 +1,64 @@
+import static org.junit.Assert.assertEquals;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class IssueParserTest {
+    public String output = "";
+    public String str_output = "";
+  
+    @Before
+    public void setUp() throws Exception {
+        FileReader in = null;  
+        BufferedReader br = null; 
+        try {
+            in = new FileReader("Sample-output.txt");
+            br = new BufferedReader(in);
+
+            while ((output = br.readLine()) != null) {
+                str_output += output;
+            }
+            System.out.println(str_output);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    } 
+
+    @Test
+    public void testparseIssues() {
+        IssueParser issue_parser = new IssueParser();
+        List<Issue> is = issue_parser.parseIssues(str_output);
+        Issue issue1 = is.get(1);
+        User u1 = new User();
+
+        u1.setLogin("syadlapa");
+        u1.setId("25208790");
+
+        assertEquals(2, is.size());
+        assertEquals("opening new issue", issue1.getBody());
+        assertEquals(205441547, issue1.getId());
+        assertEquals("opening", issue1.getTitle());
+        assertEquals("2017-02-05T18:01:05Z", issue1.getCreatedAt());
+        assertEquals(null, issue1.getClosedAt());
+        assertEquals("open", issue1.getState());
+        assertEquals(u1, issue1.getUser());
+        assertEquals(u1, issue1.getAssignee());
+
+    }
+
+}
