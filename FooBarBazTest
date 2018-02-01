@@ -1,0 +1,20 @@
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class FooBarBazTest { 
+
+    @Test
+    public void testValidation() {
+        FooBar fb = new FooBar();
+        assertEquals(0, fb.validation("-1", 0));
+    }
+
+    @Test
+    public void testisDivisible() {
+        FooBar fb = new FooBar(); 
+        assertEquals(0, fb.isDivisible(9, 3));
+        assertEquals(0, fb.isDivisible(15, 5));
+        assertEquals(0, fb.isDivisible(35, 7));
+    }
+}
