@@ -1,0 +1,40 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class UserTest {
+    private User u1;
+    private User u2;
+
+    @Before
+    public void setUp() throws Exception {
+        u1 = new User();
+        u2 = new User();
+        u1.setId("25");
+        u2.setId("25");
+        u1.setLogin("Tulasi");
+        u2.setLogin("ms-o"); 
+    }
+
+    @Test
+    public void testHashCode() {
+        assertTrue(u1.hashCode() == u2.hashCode());
+    }
+
+    @Test
+    public void testEqualsObject() {
+        assertTrue(u1.equals(u2));
+    }
+
+    @Test
+    public void testToString() {
+        String str = "User [login=Tulasi, id=25]";
+        assertEquals(str, u1.toString());
+
+        String str1 = "User [login=ms-o, id=25]";
+        assertEquals(str1, u2.toString());
+    }
+
+}
